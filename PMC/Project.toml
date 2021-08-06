@@ -1,0 +1,4 @@
+name = "PMC"
+uuid = "934db90b-1ff8-4136-abe0-0fec34e558d6"
+authors = ["Bruno Barbosa do Amaral <brunoamaral@psr-inc.com>"]
+version = "0.1.0"

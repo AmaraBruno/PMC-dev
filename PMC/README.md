@@ -1,0 +1,3 @@
+# Pesquisa de equilíbrio de mercado em ambiente competitivo
+
+Esta trabalho faz parte de uma pesquisa de mercado solicitada pelo ministério da economia para avaliar os melhores desenhos de mercado para o setor elétrico. Busca-se responder sobre a viabilidade de implantação de um mercado livre de intervenções governamentais no mercado de energiael ́etrica brasileiro. O modelo de otimização desenvolvido tenta descrever a dinâmica de comercialização da energia em um mercado livre de intervenções. As interações entre os agentes e os consumidores se dão no âmbito do mercado de curto prazo.
