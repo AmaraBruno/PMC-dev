@@ -6,7 +6,8 @@
 
     Programa criado para implementação de um modelo de otimização para estudo
     da dinâmica do mercado de energia elétrica brasileiro em ambiente totalmente
-    competitivo.
+    competitivo. Neste exemplo, a demanda do modelo é variada e são observados os
+    resultados de saída do modelo.
 =#
 
 

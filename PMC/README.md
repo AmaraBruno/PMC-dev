@@ -4,9 +4,11 @@ Equipe de Modelos - PSR
 
 ## Introdução
 
-Esta trabalho faz parte de uma pesquisa de mercado solicitada pelo ministério da economia para avaliar os melhores desenhos de mercado para o setor elétrico. Busca-se responder sobre a viabilidade de implantação de um mercado livre de intervenções governamentais no mercado de energia elétrica brasileiro. O modelo de otimização desenvolvido tenta descrever a dinâmica de comercialização da energia em um mercado livre de intervenções. As interações entre os agentes e os consumidores se dão no âmbito do mercado de curto prazo.
+Esta trabalho faz parte de uma pesquisa de mercado solicitada pelo ministério da economia para avaliar os melhores desenhos de mercado para o setor elétrico. Busca-se responder sobre a viabilidade de implantação de um mercado livre de intervenções governamentais no mercado de energia elétrica brasileiro. O modelo de otimização desenvolvido tenta descrever a dinâmica de expansão dos agentes geradores de energia em um mercado livre de intervenções. As interações entre os agentes e os consumidores se dão no âmbito do mercado de curto prazo.
 
-https://render.githubusercontent.com/render/math?math=e^{i%20\pi}%20=%20-1
+## Mecanismo de competição
+
+O mecanismo de competição construído pelo modelo parte da interação entre a garantia física total do sistema e o preço spot da energia elétrica. O objetivo ́e minimizar os custos de expansão da  geração, o  que  significa  construir  o  mínimo  necessário  para  poder  atender  a  demanda  durante um determinado período de tempo. Entretanto, o preço spot ́e decrescente com a garantia física. Uma menor garantia física total disponível implica num preço spot maior.   Um preço spot maior, por sua vez, atrai os investimentos para o setor da geração, induzindo crescimento da garantia física total. Um crescimento da garantia física total reduz o preço spot.  Percebe-se que há uma relação de compromisso entre a garantia física total e o preço da energia elétrica no mercado.  O modelo busca encontrar um ponto de equilíbrio neste sistema de forma a minimizar o preço da energia para o consumidor.
 
 ## Modelo desenvolvido
 
