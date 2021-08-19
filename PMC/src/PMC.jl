@@ -121,14 +121,14 @@ function build_pmc_model(pmc_model::PMCModel)
     GF_brkpts=pmc_model.pa_per_case
 
     #Os montantes contratados não precisam ser restrigindos da mesma forma que a garantia física total
-    Q_brkpts=0.0:0.5:35.0;
-    Qusina_brkpts=0.0:0.5:35.0;
+    Q_brkpts=0.0:0.5:55.0;
+    Qusina_brkpts=0.0:0.5:55.0;
 
     #Non-linear constraint for vpl
     if (pmc_model.lin_interp) #If linear interpolation is enabled, UnionJack pattern is not used (Package can evaluate nl function in intermediate points)
         vpl_approx_plant=Array{VariableRef, 1}(undef, num_plants);
         for i=1:num_plants
-            vpl_pwl_aux=BivariatePWLFunction(GF_brkpts, Qusina_brkpts, (gf, qi) -> PMC.vpl(gf, qi, pmc_model.gen_costs[i],
+            vpl_pwl_aux=BivariatePWLFunction(sort(GF_brkpts), sort(Qusina_brkpts), (gf, qi) -> PMC.vpl(gf, qi, pmc_model.gen_costs[i],
             pmc_model.gen_per_plant[:,:,i], pmc_model.pa_per_case, pmc_model.spot_prices, pmc_model.gen_aversion_risk_factor, pmc_model.alpha,
             lin_interp=pmc_model.lin_interp))
 
@@ -137,12 +137,12 @@ function build_pmc_model(pmc_model::PMCModel)
         end
 
         #Approximating demand expenses
-        phi_pwl_aux=BivariatePWLFunction(GF_brkpts, Q_brkpts, (gf, q) -> PMC.phi(gf, q, pmc_model.demand,
+        phi_pwl_aux=BivariatePWLFunction(sort(GF_brkpts), sort(Q_brkpts), (gf, q) -> PMC.phi(gf, q, pmc_model.demand,
         pmc_model.pa_per_case, pmc_model.spot_prices, pmc_model.dem_aversion_risk_factor, pmc_model.alpha, lin_interp=pmc_model.lin_interp))
     else
         vpl_approx_plant=Array{VariableRef, 1}(undef, num_plants);
         for i=1:num_plants
-            vpl_pwl_aux=BivariatePWLFunction(GF_brkpts, Qusina_brkpts, (gf, qi) -> PMC.vpl(gf, qi, pmc_model.gen_costs[i],
+            vpl_pwl_aux=BivariatePWLFunction(sort(GF_brkpts), sort(Qusina_brkpts), (gf, qi) -> PMC.vpl(gf, qi, pmc_model.gen_costs[i],
             pmc_model.gen_per_plant[:,:,i], pmc_model.pa_per_case, pmc_model.spot_prices, pmc_model.gen_aversion_risk_factor, pmc_model.alpha,
             lin_interp=pmc_model.lin_interp), pattern=:UnionJack)
 
@@ -151,7 +151,7 @@ function build_pmc_model(pmc_model::PMCModel)
         end
 
         #Approximating demand expenses
-        phi_pwl_aux=BivariatePWLFunction(GF_brkpts, Q_brkpts, (gf, q) -> PMC.phi(gf, q, pmc_model.demand,
+        phi_pwl_aux=BivariatePWLFunction(sort(GF_brkpts), sort(Q_brkpts), (gf, q) -> PMC.phi(gf, q, pmc_model.demand,
         pmc_model.pa_per_case, pmc_model.spot_prices, pmc_model.dem_aversion_risk_factor, pmc_model.alpha, lin_interp=pmc_model.lin_interp), pattern=:UnionJack)
     end
 
@@ -160,6 +160,8 @@ function build_pmc_model(pmc_model::PMCModel)
 
     #Objective function
     @objective(pmc_model.model, Min, phi_approx+sum(suborno[i] for i=1:num_plants))
+
+    set_silent(pmc_model.model)
 
     #Return JuMP variables
     return GF, Q, Q_plant, hab_plant, suborno, vpl_approx_plant, phi_approx

@@ -26,75 +26,18 @@ using .PMC
 ####################################################################################################
 
 #Setting base path to case's paths
-path_to_path_file="D:\\Dropbox (PSR)\\MeusProgramas\\Julia\\PesquisaEquilibrioMercado\\CodigosJulia\\src\\config_files\\cases_paths.txt"
-path_to_data_files="D:\\Dropbox (PSR)\\MeusProgramas\\Julia\\PesquisaEquilibrioMercado\\CodigosJulia\\src\\config_files\\data_files_names.txt"
-output_dir="D:\\Dropbox (PSR)\\MeusProgramas\\Julia\\PesquisaEquilibrioMercado\\CodigosJulia\\src\\Results"
+toml_file_path="D:\\PMC-dev\\config\\io_config.toml"
 
 #Creating object
-io_obj=PMCIO.IOInfo(path_to_path_file,
-                    path_to_data_files,
-                    output_dir)
+io_obj=PMCIO.IOInfo(toml_file_path)
                     
 ####################################################################################################
 #Getting data from input files
 ####################################################################################################
 
 #Get data
-spot_prices,therm_gen,hyd_gen,num_cases,num_stages,num_scen,num_therm_plts,num_hyd_plts=PMCIO.get_data(io_obj);
-
-####################################################################################################
-#Data processing
-####################################################################################################
-
-#Process data
-therm_pa, hyd_pa, total_pa_per_case=PMCIO.process_data(therm_gen, hyd_gen)
-
-#Showing Results
-println("")
-println("Thermal phisical assurances:")
-for i=1:size(therm_pa, 1)
-    for j=1:size(therm_pa, 2)
-        print("$(round(therm_pa[i, j], digits=2))    ")
-    end
-    println("")
-end
-println("")
-
-println("Hydro phisical assurances:")
-for i=1:size(hyd_pa, 1)
-    for j=1:size(hyd_pa, 2)
-        print("$(round(hyd_pa[i, j], digits=2))    ")
-    end
-    println("")
-end
-println("")
-
-println("Total phisical assurances per case:")
-for i=1:length(total_pa_per_case)
-    println("Case $i: $(total_pa_per_case[i])")
-end
-
-#Revert order to simulate PA and spot prices relationship
-spot_prices=reverse(spot_prices, dims=1)
-
-#Calculate pa per plant and generation matrix per plant
-sel_case=5
-pa_per_plant, gen_per_plant=PMCIO.calc_per_plant(therm_gen[sel_case, :, :, :], hyd_gen[sel_case, :, :, :], therm_pa[sel_case, :], hyd_pa[sel_case, :]);
-
-println("")
-println("Phisical assurance per plant")
-for i=1:length(pa_per_plant)
-    println("$(pa_per_plant[i])")
-end
-println("")
-
-println("Generation of plant 1")
-for i=1:size(gen_per_plant, 1)
-    for j=1:size(gen_per_plant, 2)
-        print("$(gen_per_plant[i, j, 1])   ")
-    end
-    println("")
-end
+sel_case=10;
+num_cases, total_num_plants, num_stages, num_scen, spot_prices, gen_per_plant, pa_per_plant, total_pa_per_case=PMCIO.get_data(io_obj, selected_case=sel_case);
 
 ####################################################################################################
 #Building PMC model
@@ -127,10 +70,16 @@ println("PMC number of stages: $(pmc_model.num_stages)")
 println("PMC number of scenarios: $(pmc_model.num_scen)")
 println("PMC number of plants: $(pmc_model.num_plants)\n")
 
+println("PMC phisical assurances:")
+for i=1:length(pmc_model.pa_per_plant)
+    println("$(round(pmc_model.pa_per_plant[i], digits=2))    ")
+end
+println("")
+
 println("PMC spot prices:")
 for i=1:size(pmc_model.spot_prices, 2)
     for j=1:size(pmc_model.spot_prices, 3)
-        print("$(round(pmc_model.spot_prices[5, i, j], digits=2))    ")
+        print("$(round(pmc_model.spot_prices[sel_case, i, j], digits=2))    ")
     end
     println("")
 end
@@ -143,8 +92,8 @@ println("")
 demand=[1.0, 3.0, 5.0, 7.0, 9.0, 11.0, 13.0, 15.0, 18.0, 21.0]; #lambda_d
 
 #Initialize matrix to store results
-VPl_per_plant=zeros(length(demand), num_hyd_plts+num_therm_plts);
-dispatch_per_plant=zeros(length(demand), num_hyd_plts+num_therm_plts);
+VPl_per_plant=zeros(length(demand), total_num_plants);
+dispatch_per_plant=zeros(length(demand), total_num_plants);
 total_dispatch=zeros(length(demand));
 optimal_cost=zeros(length(demand));
 
@@ -170,7 +119,7 @@ for dem in demand
     #Run model
     PMC.run_model(pmc_model)
 
-    for j=1:(num_hyd_plts+num_therm_plts)
+    for j=1:(total_num_plants)
         VPl_per_plant[i,j]=value(vpl_approx_plant[j])
         dispatch_per_plant[i,j]=value(Q_plant[j])
     end
@@ -182,14 +131,14 @@ for dem in demand
 end
 
 #Data labels
-av_dem_factor_label="Demand aversion";
+demand_axis_label="Demand [MW]";
 total_dispatch_label=["Hired energy"];
 opt_cost_label=["Optimal cost"];
 VPl_per_plant_label=["Plant1", "Plant2", "Plant3", "Plant4", "Plant5"];
 dispatch_per_plant_label=["Plant1", "Plant2", "Plant3", "Plant4", "Plant5"];
 
 #Creating output
-PMCIO.create_output(demand, VPl_per_plant, io_obj, x_label=av_dem_factor_label, y_label=VPl_per_plant_label, file_name="dem_vpl.csv", output_name="Demanda X Valor presente líquido")
-PMCIO.create_output(demand, dispatch_per_plant, io_obj, x_label=av_dem_factor_label, y_label=dispatch_per_plant_label, file_name="dem_Q_plant.csv", output_name="Demanda X Despacho por planta")
-PMCIO.create_output(demand, total_dispatch, io_obj, x_label=av_dem_factor_label, y_label=total_dispatch_label, file_name="dem_Q.csv", output_name="Demanda X Despacho total")
-PMCIO.create_output(demand, optimal_cost, io_obj, x_label=av_dem_factor_label, y_label=opt_cost_label, file_name="dem_opt_cost.csv", output_name="Demanda X Custo ótimo")
+PMCIO.create_output(demand, VPl_per_plant, io_obj, x_label=demand_axis_label, y_label=VPl_per_plant_label, file_name="dem_vpl.csv", output_name="Demanda X Valor presente líquido")
+PMCIO.create_output(demand, dispatch_per_plant, io_obj, x_label=demand_axis_label, y_label=dispatch_per_plant_label, file_name="dem_Q_plant.csv", output_name="Demanda X Despacho por planta")
+PMCIO.create_output(demand, total_dispatch, io_obj, x_label=demand_axis_label, y_label=total_dispatch_label, file_name="dem_Q.csv", output_name="Demanda X Despacho total")
+PMCIO.create_output(demand, optimal_cost, io_obj, x_label=demand_axis_label, y_label=opt_cost_label, file_name="dem_opt_cost.csv", output_name="Demanda X Custo ótimo")

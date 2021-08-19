@@ -2,7 +2,7 @@
 module PMCIO
 
 using DataFrames: Matrix
-using DataFrames, CSV, Plots;
+using CSV, DataFrames, Plots, TOML;
 
 export IOInfo, getData
 
@@ -29,7 +29,7 @@ mutable struct IOInfo
         #datasep = ",";
 
         #Parse toml config file
-        content=TOML.parsefile(file_path);
+        content=TOML.parsefile(toml_file_path);
         output_dir=content["pmc_model_output_dir"]["output_path_dir"];
         
         initial_line = 4; #header line position
@@ -44,10 +44,14 @@ mutable struct IOInfo
     end
 end
 
-function get_data(stct::IOinfo; selected_case::Int, verbose::Bool=true)
+function get_data(stct::IOInfo; selected_case::Int, verbose::Bool=true)
+
+    #IO params
+    initial_line=stct.initial_line
+    index_dict=stct.index_dict
 
     #Parse file
-    content=TOML.parsefile(file_path);
+    content=TOML.parsefile(stct.io_config_file_path);
 
     #Get file's content
     files=content["sddp_files"]["file_name"];
@@ -157,7 +161,7 @@ function get_data(stct::IOinfo; selected_case::Int, verbose::Bool=true)
         println("Total number of plants: $total_num_plts")
     end
 
-    return spot_prices, gen_per_plant, pa_per_plant, total_pa_per_case
+    return num_cases, total_num_plts, num_stages, num_scen, spot_prices, gen_per_plant, pa_per_plant, total_pa_per_case
 
 end
 #=
@@ -361,7 +365,7 @@ function calc_per_plant(therm_gen, hyd_gen, therm_pa, hyd_pa)
 end
 =#
 function create_output(x, y, stct::IOInfo;x_label, y_label, file_name, output_name)
-   
+    
     #Configure plot
     font_name="times"
     Plots.default(titlefont = (font_name),
