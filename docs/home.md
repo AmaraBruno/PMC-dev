@@ -44,23 +44,19 @@ O modelo de otimização implementado no código é o seguinte:
 \[
 VPL_{i}(GF, Q_{i}) = \lambda_{g} E \left( \widehat{VPL}_{i}(GF, Q_{i}, c_{i}, g_{i, t, s}, \pi_{t, s})) \right) +
  (1 - \lambda_{g}) CVaR\left( \widehat{VPL}_{i}(GF, Q_{i}, c_{i}, g_{i, t, s}, \pi_{t, s}) \right)
-\\
 </div>
 
 <div>
 \widehat{VPL}_{i}(GF, Q_{i}, c_{i}, g_{i, t, s}, \pi_{t, s})) = \sum_{t} \left[g_{i, t, :} (\pi_{t, :} - c_{i}) + \left(\frac{1}{T}\sum_{t} \left[ E(\pi_{t, :}) \right] - \pi_{t, :}\right) Q_{i} \right]
-\\
 </div>
 
 <div>
 \Phi(GF, Q, d, \pi_{t, s}, \lambda_{d}, \alpha) = \lambda_{d} E \left( \widehat{\Phi}(GF, Q, d, \pi_{t, s})) \right) +
  (1 - \lambda_{d}) CVaR_\alpha\left(\widehat{\Phi}(GF, Q, d, \pi_{t, s})) \right)
-\\
 </div>
 
 <div>
 \widehat{\Phi}(GF, Q, d, \pi_{t, s}) = \sum_{t} \left[ (d-Q)\pi_{t, :} +  \frac{1}{T}\sum_{t} \left[ E(\pi_{t, :}) \right] Q\right]
-\]
 </div>
 
 Onde:
