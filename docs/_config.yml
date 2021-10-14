@@ -1,0 +1,14 @@
+title: "Pesquisa de Mercado Totalmente Liberalizado"
+remote_theme: pmarsceill/just-the-docs
+logo: https://www.psr-inc.com/wp-content/themes/psrNew/favicon.png
+
+#adding zoom in images
+zoom_img_enabled: true
+
+#dark/light mode
+change_color_enabled: true
+color_scheme: "dark"
+
+back_to_top: true
+back_to_top_text: "Back to top"
+footer_content: "Copyright &copy; 2021 PSR - <a href='https://www.psr-inc.com' target='_blank'>psr-inc.com</a>"
