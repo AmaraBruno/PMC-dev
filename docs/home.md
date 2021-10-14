@@ -45,26 +45,32 @@ O modelo de otimização implementado no código é o seguinte:
 VPL_{i}(GF, Q_{i}) = \lambda_{g} E \left( \widehat{VPL}_{i}(GF, Q_{i}, c_{i}, g_{i, t, s}, \pi_{t, s})) \right) +
  (1 - \lambda_{g}) CVaR\left( \widehat{VPL}_{i}(GF, Q_{i}, c_{i}, g_{i, t, s}, \pi_{t, s}) \right)
 \\
+</div>
 
+<div>
 \widehat{VPL}_{i}(GF, Q_{i}, c_{i}, g_{i, t, s}, \pi_{t, s})) = \sum_{t} \left[g_{i, t, :} (\pi_{t, :} - c_{i}) + \left(\frac{1}{T}\sum_{t} \left[ E(\pi_{t, :}) \right] - \pi_{t, :}\right) Q_{i} \right]
 \\
+</div>
 
+<div>
 \Phi(GF, Q, d, \pi_{t, s}, \lambda_{d}, \alpha) = \lambda_{d} E \left( \widehat{\Phi}(GF, Q, d, \pi_{t, s})) \right) +
  (1 - \lambda_{d}) CVaR_\alpha\left(\widehat{\Phi}(GF, Q, d, \pi_{t, s})) \right)
 \\
+</div>
 
+<div>
 \widehat{\Phi}(GF, Q, d, \pi_{t, s}) = \sum_{t} \left[ (d-Q)\pi_{t, :} +  \frac{1}{T}\sum_{t} \left[ E(\pi_{t, :}) \right] Q\right]
 \]
 </div>
 
 Onde:
-* $d$: demanda de energia $[MW]$
-* $GF$: garantia física total do sistema (somente usinas viabilizadas pela demanda) $[MWmédios]$
-* $GF_i$: garantia física da usina $i$ $[MWmédios]$
-* $Q$: montante total contratado pela demanda $[Wh]$
-* $Q_i$: montante contratado pela demanda referente à usina $i$ $[Wh]$
-* $x_i$: variável binária que indica se a demanda está disposta a viabilizar financeiramente à usina $i$
-* $\phi_i$: pagamento por fora feito à usina $i$
+* <div>\(d\)</div>: demanda de energia $[MW]$
+* <div>\(GF\)</div>: garantia física total do sistema (somente usinas viabilizadas pela demanda) $[MWmédios]$
+* <div>\(GF_i\)</div>: garantia física da usina $i$ $[MWmédios]$
+* <div>\(Q\)</div>: montante total contratado pela demanda $[Wh]$
+* <div>\(Q_i\)</div>: montante contratado pela demanda referente à usina $i$ $[Wh]$
+* <div>\(x_i\)</div>: variável binária que indica se a demanda está disposta a viabilizar financeiramente à usina $i$
+* <div>\(phi_i\)</div>: pagamento por fora feito à usina $i$
 * M: constante aprox. $\infty$
-* $VPL_i$: valor presente líquido referente à usina $i$
+* <div>\(VPL_i)</div>: valor presente líquido referente à usina $i$
 * $\Phi$: gasto esperado pela demanda com a contratação das usinas 
