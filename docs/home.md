@@ -75,9 +75,9 @@ VPL_{i}(GF, Q_{i}) = \lambda_{g} E \left( \widehat{VPL}_{i}(GF, Q_{i}, c_{i}, g_
 </div>
 
 Onde:
-* <div><nobr>\(d\): demanda de energia \(MW]\)</nobr></div>
-* <div>\(GF\)</div>: garantia física total do sistema (somente usinas viabilizadas pela demanda) $[MWmédios]$
-* <div>\(GF_i\)</div>: garantia física da usina $i$ $[MWmédios]$
+* <div><nobr>\(d\): demanda de energia [\(MW\)]</nobr></div>
+* <div><nobr>\(GF\): garantia física total do sistema (somente usinas viabilizadas pela demanda) [\(MWmédios\)]</nobr></div>
+* <div>\(GF_i\)</div>: garantia física da usina \(i\) \(MWmédios\)
 * <div>\(Q\)</div>: montante total contratado pela demanda $[Wh]$
 * <div>\(Q_i\)</div>: montante contratado pela demanda referente à usina $i$ $[Wh]$
 * <div>\(x_i\)</div>: variável binária que indica se a demanda está disposta a viabilizar financeiramente à usina $i$
