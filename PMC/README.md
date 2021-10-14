@@ -14,7 +14,11 @@ O mecanismo de competição construído pelo modelo parte da interação entre a
 
 O modelo de otimização implementado no código é o seguinte:
 
-$$
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<div>
+\[
 \begin{aligned}
     & \underset{GF, Q, Q_i, x, \phi}{\text{min:}}
     & & \Phi \left(GF, Q \right) + \sum_{i=1}^{N} \phi_i\\
@@ -25,10 +29,11 @@ $$
     & & & \phi_i \geq 0 \; \;(i=1, 2, ..., N)\\
     & & & Q_i \geq 0 \; \;(i=1, 2, ..., N)\\
 \end{aligned}
-$$
+\]
+</div>
 
-$$
-
+<div>
+\[
 VPL_{i}(GF, Q_{i}) = \lambda_{g} E \left( \widehat{VPL}_{i}(GF, Q_{i}, c_{i}, g_{i, t, s}, \pi_{t, s})) \right) +
  (1 - \lambda_{g}) CVaR\left( \widehat{VPL}_{i}(GF, Q_{i}, c_{i}, g_{i, t, s}, \pi_{t, s}) \right)
 \\
@@ -41,7 +46,8 @@ VPL_{i}(GF, Q_{i}) = \lambda_{g} E \left( \widehat{VPL}_{i}(GF, Q_{i}, c_{i}, g_
 \\
 
 \widehat{\Phi}(GF, Q, d, \pi_{t, s}) = \sum_{t} \left[ (d-Q)\pi_{t, :} +  \frac{1}{T}\sum_{t} \left[ E(\pi_{t, :}) \right] Q\right]
-$$
+\]
+</div>
 
 Onde:
 * $d$: demanda de energia $[MW]$
@@ -53,4 +59,4 @@ Onde:
 * $\phi_i$: pagamento por fora feito à usina $i$
 * M: constante aprox. $\infty$
 * $VPL_i$: valor presente líquido referente à usina $i$
-* $\Phi$: gasto esperado pela demanda com a contratação das usinas
+* $\Phi$: gasto esperado pela demanda com a contratação das usinas 
