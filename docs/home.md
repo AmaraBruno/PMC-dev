@@ -75,13 +75,13 @@ VPL_{i}(GF, Q_{i}) = \lambda_{g} E \left( \widehat{VPL}_{i}(GF, Q_{i}, c_{i}, g_
 </div>
 
 Onde:
-* <div><nobr>\(d\): demanda de energia [\(MW\)]</nobr></div>
-* <div><nobr>\(GF\): garantia física total do sistema (somente usinas viabilizadas pela demanda) [\(MWmédios\)]</nobr></div>
-* <div>\(GF_i\)</div>: garantia física da usina \(i\) \(MWmédios\)
-* <div>\(Q\)</div>: montante total contratado pela demanda $[Wh]$
-* <div>\(Q_i\)</div>: montante contratado pela demanda referente à usina $i$ $[Wh]$
-* <div>\(x_i\)</div>: variável binária que indica se a demanda está disposta a viabilizar financeiramente à usina $i$
-* <div>\(phi_i\)</div>: pagamento por fora feito à usina $i$
-* M: constante aprox. $\infty$
-* <div>\(VPL_i)</div>: valor presente líquido referente à usina $i$
-* $\Phi$: gasto esperado pela demanda com a contratação das usinas 
+* <div><nobr>\(d\): demanda de energia \([MW]\)</nobr></div>
+* <div><nobr>\(GF\): garantia física total do sistema (somente usinas viabilizadas pela demanda) \([MWmédios]\)</nobr></div>
+* <div><nobr>\(GF_i\)</div>: garantia física da usina \(i\) \([MWmédios]\)</nobr></div>
+* <div><nobr>\(Q\)</div>: montante total contratado pela demanda $[Wh]$</nobr></div>
+* <div><nobr>\(Q_i\)</div>: montante contratado pela demanda referente à usina \(i\) \([Wh]\)</nobr></div>
+* <div><nobr>\(x_i\)</div>: variável binária que indica se a demanda está disposta a viabilizar financeiramente à usina \(i\)</nobr></div>
+* <div><nobr>\(\Phi_i\)</div>: pagamento por fora feito à usina \(i\)</nobr></div>
+* \(M\): constante aprox. \(\infty\)</nobr></div>
+* <div><nobr>\(VPL_i\)</div>: valor presente líquido referente à usina \(i\)</nobr></div>
+* \(\Phi\): gasto esperado pela demanda com a contratação das usinas </nobr></div>
