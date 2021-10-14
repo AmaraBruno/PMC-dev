@@ -82,6 +82,6 @@ Onde:
 * <div><nobr>\(Q_i\): montante contratado pela demanda referente à usina \(i\) \([Wh]\)</nobr></div>
 * <div><nobr>\(x_i\): variável binária que indica se a demanda está disposta a viabilizar financeiramente à usina \(i\)</nobr></div>
 * <div><nobr>\(\Phi_i\): pagamento por fora feito à usina \(i\)</nobr></div>
-* \(M\): constante aprox. \(\infty\)</nobr></div>
+* <div><nobr>\(M\): constante aprox. \(\infty\)</nobr></div>
 * <div><nobr>\(VPL_i\): valor presente líquido referente à usina \(i\)</nobr></div>
-* \(\Phi\): gasto esperado pela demanda com a contratação das usinas </nobr></div>
+* <div><nobr>\(\Phi\): gasto esperado pela demanda com a contratação das usinas </nobr></div>
