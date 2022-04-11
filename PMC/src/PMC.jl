@@ -52,6 +52,9 @@ mutable struct PMCModel
     optimizer
     model::Model
 
+    # Print model?
+    print_model :: Bool
+
     #Class constructor
     function PMCModel(demand::Float64,
                       lambda_dem::Float64, 
@@ -63,7 +66,8 @@ mutable struct PMCModel
                       pa_per_case,
                       spot_prices,
                       optimizer;
-                      lin_interp::Bool = true)
+                      lin_interp::Bool = true,
+                      print_model::Bool = true)
 
         #Constant
         M=10.0e10
@@ -94,7 +98,8 @@ mutable struct PMCModel
             pa_per_case,
             spot_prices,
             optimizer,
-            model)
+            model,
+            print_model)
 
     end
     
@@ -162,6 +167,13 @@ function build_pmc_model(pmc_model::PMCModel)
     @objective(pmc_model.model, Min, phi_approx+sum(suborno[i] for i=1:num_plants))
 
     set_silent(pmc_model.model)
+
+    # Write linear programming problem to file
+    if (pmc_model.print_model)
+      open("pmc_model.lp", "w") do lp_file
+        print(lp_file, pmc_model.model)
+      end
+    end 
 
     #Return JuMP variables
     return GF, Q, Q_plant, hab_plant, suborno, vpl_approx_plant, phi_approx

@@ -49,7 +49,7 @@ dem_risk_av_factor=0.7; #lambda_d
 gen_risk_av_factor=0.9; #lambda_g
 M=10.0e10;
 alpha=0.2;
-gen_costs=[0.8, 0.8, 1.2, 0.0, 0.0];
+gen_costs=[3.0, 3.0, 3.0, 3.0, 3.0];
 
 #Create PMC object
 pmc_model=PMC.PMCModel(demand, 
@@ -61,7 +61,8 @@ pmc_model=PMC.PMCModel(demand,
                        total_pa_per_case, 
                        spot_prices, 
                        Cbc.Optimizer,
-                       lin_interp=true)
+                       lin_interp=true,
+                       print_model=false)
 
 #Show some attributes
 println("")
