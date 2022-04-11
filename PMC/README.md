@@ -6,8 +6,6 @@ Equipe de Modelos - PSR
 
 Esta trabalho faz parte de uma pesquisa de mercado solicitada pelo ministério da economia para avaliar os melhores desenhos de mercado para o setor elétrico. Busca-se responder sobre a viabilidade de implantação de um mercado livre de intervenções governamentais no mercado de energia elétrica brasileiro. O modelo de otimização desenvolvido tenta descrever a dinâmica de comercialização da energia em um mercado livre de intervenções. As interações entre os agentes e os consumidores se dão no âmbito do mercado de curto prazo.
 
-https://render.githubusercontent.com/render/math?math=e^{i%20\pi}%20=%20-1
-
 ## Modelo desenvolvido
 
 O modelo de otimização implementado no código é o seguinte:
@@ -26,7 +24,6 @@ $$
 $$
 
 $$
-
 VPL_{i}(GF, Q_{i}) = \lambda_{g} E \left( \widehat{VPL}_{i}(GF, Q_{i}, c_{i}, g_{i, t, s}, \pi_{t, s})) \right) +
  (1 - \lambda_{g}) CVaR\left( \widehat{VPL}_{i}(GF, Q_{i}, c_{i}, g_{i, t, s}, \pi_{t, s}) \right)
 \\

@@ -14,19 +14,33 @@
 
 module PMC
 
-using Base: Float64
-using CSV, DataFrames, JuMP, PiecewiseLinearOpt;
+include("PMCIO.jl")
 
-#Exporting functions
+using Base: Float64
+
+# Libraries
+using .PMCIO;
+using CSV
+using DataFrames
+using JuMP
+using PiecewiseLinearOpt;
+
+# Exporting functions
 export read_data_from_cases
 export phi
 export vpl
 
-#Defining module-level variables
+# Module ID for log
+module_name = "PMC"
+
+# Defining module-level variables
 epsilon=0.5
 
-#Object model
+# Object model
 mutable struct PMCModel
+
+    # IO object
+    io_handler
 
     #Study configuration parameters
     demand::Float64
@@ -40,6 +54,8 @@ mutable struct PMCModel
     M::Float64
 
     #System parameters
+    selected_case
+    num_cases
     num_stages
     num_scen
     num_plants
@@ -51,23 +67,28 @@ mutable struct PMCModel
     #JuMP model variable and optimizer
     optimizer
     model::Model
+    has_run :: Bool
 
     # Print model?
     print_model :: Bool
 
     #Class constructor
-    function PMCModel(demand::Float64,
-                      lambda_dem::Float64, 
-                      lambda_gen::Float64, 
-                      alpha::Float64, 
-                      gen_costs::Vector{Float64},
-                      gen_per_plant,
-                      pa_per_plant,
-                      pa_per_case,
-                      spot_prices,
-                      optimizer;
+    function PMCModel(config_file_path,
+                      demand,
+                      dem_av_rsk_factor, #lambda_d
+                      gen_av_rsk_factor, #lambda_g
+                      alpha,
+                      gen_costs,
+                      sel_case,
+                      optimizer,
                       lin_interp::Bool = true,
                       print_model::Bool = true)
+
+        #Creating object
+        io_obj=PMCIO.IOInfo(config_file_path)
+
+        #Get data
+        num_cases, num_plants, num_stages, num_scen, spot_prices, gen_per_plant, pa_per_plant, total_pa_per_case=PMCIO.get_data(io_obj, selected_case=sel_case);
 
         #Constant
         M=10.0e10
@@ -82,30 +103,53 @@ mutable struct PMCModel
         #Creating model variable
         model=Model(optimizer)
 
+        has_run = false
+
         #Allocating
-        new(demand, 
-            lambda_dem, 
-            lambda_gen, 
+        new(io_obj,
+            demand,
+            dem_av_rsk_factor, 
+            gen_av_rsk_factor, 
             alpha, 
             gen_costs,
             lin_interp,
-            M, 
+            M,
+            sel_case,
+            num_cases,
             num_stages,
             num_scen,
             num_plants,
             gen_per_plant,
             pa_per_plant,
-            pa_per_case,
+            total_pa_per_case,
             spot_prices,
             optimizer,
             model,
+            has_run,
             print_model)
-
     end
-    
 end
 
+function setDemand(pmc_model::PMCModel,demand::Float64)
+  
+  routine_name = "setDemand"
+
+  if (demand < 0.0)
+    print(module_name,": ",routine_name)
+    error("Demand has negative value")
+  end
+
+  # Set informed demand
+  pmc_model.demand = demand
+
+end 
+
 function build_pmc_model(pmc_model::PMCModel)
+
+    # If model has been run, redefine
+    if (pmc_model.has_run)
+      pmc_model.model = Model(pmc_model.optimizer)
+    end
 
     #Aux
     num_plants=pmc_model.num_plants
@@ -184,6 +228,7 @@ function run_model(pmc_model::PMCModel)
 
     #Run PMC model
     optimize!(pmc_model.model)
+    pmc_model.has_run = true
 
 end
 
@@ -551,6 +596,10 @@ function phi(garantia_fisica_total,
     
     #Retornando
     return aux
+end
+
+function createOutput(pmc_model::PMCModel, x, y; x_label, y_label, file_name, output_name)
+  PMCIO.create_output(x, y, pmc_model.io_handler, x_label=x_label, y_label=y_label, file_name=file_name, output_name=output_name)
 end
 
 end #Fim módulo
